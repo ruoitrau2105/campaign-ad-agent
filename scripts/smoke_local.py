@@ -18,7 +18,7 @@ class Check:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Smoke test the Camp Ads Agent HTTP runtime.")
+    parser = argparse.ArgumentParser(description="Smoke test the Campaign Ads Agent HTTP runtime.")
     parser.add_argument("--base-url", default="http://127.0.0.1:8080", help="Running app base URL.")
     args = parser.parse_args()
 
@@ -63,9 +63,8 @@ def check_ui_root(client: httpx.Client) -> None:
     _assert(response.status_code == 200, f"status {response.status_code}")
     html = response.text
     for text in [
-        "Camp Ads Agent",
-        "Split Chat + Workspace",
-        "progressive disclosure",
+        "Campaign Ads Agent",
+        "Luồng xử lý từng bước",
         "CHAT",
         "WORKSPACE",
         "Parse brief",

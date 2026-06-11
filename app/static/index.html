@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Camp Ads Agent</title>
+  <title>Campaign Ads Agent</title>
   <style>
     :root {
       font-family: "Aptos", "Segoe UI", system-ui, sans-serif;
@@ -319,15 +319,15 @@
 <body>
   <div class="app">
     <header class="topbar">
-      <div class="brand">Camp <span>Ads</span> Agent</div>
-      <div class="topnote">Split Chat + Workspace · progressive disclosure</div>
+      <div class="brand">Campaign <span>Ads</span> Agent</div>
+      <div class="topnote">Luồng xử lý từng bước trên dữ liệu mock</div>
       <div class="spacer"></div>
       <button class="ghost" type="button" onclick="restartFlow()">Reset</button>
     </header>
 
     <main class="main">
-      <section class="pane chat" aria-label="Chat UI">
-        <div class="pane-head"><span class="badge chat">CHAT</span>Chat UI</div>
+      <section class="pane chat" aria-label="Chat">
+        <div class="pane-head"><span class="badge chat">CHAT</span>Chat</div>
         <div class="thread" id="thread"></div>
         <div class="composer">
           <div class="chips">
@@ -336,14 +336,14 @@
             <button class="chip" type="button" onclick="quickAsk('Create AO alert')">Build alert</button>
           </div>
           <div class="inrow">
-            <input id="chatInput" placeholder="Ask the agent about the current step" aria-label="Chat message">
+            <input id="chatInput" placeholder="Hỏi agent về bước hiện tại" aria-label="Chat message">
             <button class="btn blue" type="button" onclick="sendChat()">Send</button>
           </div>
         </div>
       </section>
 
       <section class="pane work" aria-label="Workspace">
-        <div class="pane-head"><span class="badge work">WORKSPACE</span>Current step form and result</div>
+        <div class="pane-head"><span class="badge work">WORKSPACE</span>Form và kết quả của bước hiện tại</div>
         <div class="stepper-wrap">
           <div class="stepper" id="stepper"></div>
           <div class="progress-line"><span id="progress"></span></div>
@@ -356,13 +356,13 @@
 
   <script>
     const steps = [
-      { id: "brief", title: "Brief", tool: "brief_parse", desc: "Paste the client brief. The agent parses objective, KPI, target, budget, and funnel before opening the next step." },
-      { id: "creative", title: "Creative", tool: "creative_inspect", desc: "Upload creative material through the workspace. The agent checks file metadata and shows a mobile preview." },
-      { id: "zones", title: "Zones", tool: "zone_recommend", desc: "Recommend ad zones by objective, price, reach, VI, CTR, and CPM." },
-      { id: "dmp", title: "DMP", tool: "dmp_match", desc: "Map the brief target to DMP segments and flag missing terms with proxy suggestions." },
-      { id: "setup", title: "Setup", tool: "setup_plan", desc: "Create campaign draft setup with zone plan, budget split, bid strategy, and schedule." },
-      { id: "report", title: "Report", tool: "report_analyze", desc: "Analyze 15 report sheets and 480 campaign records into good, watch, and bad groups." },
-      { id: "alert", title: "Alert", tool: "ao_alert", desc: "Build the AO/account action alert from records that need intervention." },
+      { id: "brief", title: "Brief", tool: "brief_parse", desc: "Dán brief khách hàng. Agent bóc tách objective, KPI, target, budget và funnel trước khi mở bước tiếp theo." },
+      { id: "creative", title: "Creative", tool: "creative_inspect", desc: "Upload creative vào Workspace. Agent kiểm tra metadata file và hiển thị preview mobile." },
+      { id: "zones", title: "Zones", tool: "zone_recommend", desc: "Gợi ý ad zones theo objective, giá, reach, VI, CTR và CPM." },
+      { id: "dmp", title: "DMP", tool: "dmp_match", desc: "Map target trong brief với DMP segments và báo các term còn thiếu kèm proxy." },
+      { id: "setup", title: "Setup", tool: "setup_plan", desc: "Tạo campaign draft setup gồm zone plan, budget split, bid strategy và schedule." },
+      { id: "report", title: "Report", tool: "report_analyze", desc: "Phân tích 15 report sheets và 480 campaign records thành good, watch và bad." },
+      { id: "alert", title: "Alert", tool: "ao_alert", desc: "Tạo cảnh báo cho AO/account team từ các record cần xử lý." },
     ];
 
     const defaultBrief = "Brand: ShieldCare Insurance\\nThu lead bao hiem suc khoe. Budget 150 trieu. KPI CPL, CR, ROAS. Target Health, Insurance, Finance, Du hoc.";
@@ -466,9 +466,9 @@
       const isDone = state.done[state.current];
       els.workFoot.innerHTML = `
         <div class="hint">Tool: <b>${esc(step().tool)}</b> · Model lane: <b>${modelForTool(step().tool)}</b></div>
-        ${state.current > 0 ? `<button class="btn secondary" type="button" onclick="setCurrent(${state.current - 1})">Back</button>` : ""}
-        ${isDone && state.current < steps.length - 1 ? `<button class="btn" type="button" onclick="nextStep()">Next step</button>` : ""}
-        ${isDone && state.current === steps.length - 1 ? `<button class="btn" type="button" disabled>Flow complete</button>` : ""}
+        ${state.current > 0 ? `<button class="btn secondary" type="button" onclick="setCurrent(${state.current - 1})">Quay lại</button>` : ""}
+        ${isDone && state.current < steps.length - 1 ? `<button class="btn" type="button" onclick="nextStep()">Bước tiếp theo</button>` : ""}
+        ${isDone && state.current === steps.length - 1 ? `<button class="btn" type="button" disabled>Đã hoàn tất flow</button>` : ""}
       `;
     }
 
@@ -487,22 +487,22 @@
     function renderBrief() {
       const brief = state.brief;
       return `
-        <label class="label" for="briefText">Client brief</label>
+        <label class="label" for="briefText">Brief khách hàng</label>
         <textarea id="briefText">${esc(state.briefText)}</textarea>
         <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
           <button class="btn" type="button" onclick="parseBrief()">Parse brief</button>
-          <button class="btn secondary" type="button" onclick="loadSampleBrief()">Reset sample</button>
+          <button class="btn secondary" type="button" onclick="loadSampleBrief()">Reset mẫu</button>
         </div>
         ${brief ? `
-          <h2 class="section-title">Parsed output</h2>
+          <h2 class="section-title">Kết quả parse</h2>
           <div class="metric-grid">
             <div class="metric"><span>Brand</span><b>${esc(brief.brand)}</b></div>
             <div class="metric"><span>Funnel</span><b>${esc(brief.funnel_stage)}</b></div>
             <div class="metric"><span>Budget</span><b>${money(brief.budget_vnd)}</b></div>
             <div class="metric"><span>KPI</span><b>${esc(brief.kpi.join(" / "))}</b></div>
           </div>
-          <div class="donebox" style="margin-top:12px">Brief parsed. You can continue to Creative.</div>
-        ` : `<div class="notice">Only this brief field is active now. Parse it before the agent opens creative upload.</div>`}
+          <div class="donebox" style="margin-top:12px">Brief đã parse xong. Bạn có thể chuyển sang Creative.</div>
+        ` : `<div class="notice">Hiện chỉ mở bước Brief. Parse brief trước khi agent mở phần upload Creative.</div>`}
       `;
     }
 
@@ -516,10 +516,10 @@
           <div>
             <label class="label" for="creativeInput">Upload creative</label>
             <label class="drop ${c ? "has" : ""}" for="creativeInput">
-              ${c ? `<b>${esc(c.filename)}</b><div>${esc(c.content_type)} · ${fmt(c.size_bytes)} bytes</div>` : `<b>Choose a creative file</b><div>PNG, JPG, MP4, or a mock text file for local testing.</div>`}
+              ${c ? `<b>${esc(c.filename)}</b><div>${esc(c.content_type)} · ${fmt(c.size_bytes)} bytes</div>` : `<b>Chọn file creative</b><div>PNG, JPG, MP4 hoặc file text mock để test local.</div>`}
             </label>
             <input id="creativeInput" type="file" style="display:none">
-            ${c ? `<div class="donebox" style="margin-top:12px">Creative accepted. You can continue to zone recommendation.</div>` : `<div class="notice">The flow waits here until a creative is uploaded.</div>`}
+            ${c ? `<div class="donebox" style="margin-top:12px">Creative đã được nhận. Bạn có thể chuyển sang Zones.</div>` : `<div class="notice">Flow sẽ dừng ở đây cho tới khi upload creative.</div>`}
           </div>
           <div class="phone" aria-label="Mobile creative preview">
             <div class="phone-screen">
@@ -527,7 +527,7 @@
               <div class="adcard">
                 <div class="creative-box">${preview}</div>
                 <h3>${esc((state.brief && state.brief.brand) || "Demo Brand")}</h3>
-                <p>Preview placement before campaign setup.</p>
+                <p>Preview placement trước khi setup campaign.</p>
                 <div class="cta">Learn more</div>
               </div>
             </div>
@@ -541,13 +541,13 @@
       return `
         <button class="btn" type="button" onclick="recommendZones()">Recommend zones</button>
         ${zones.length ? `
-          <h2 class="section-title">Zone recommendation</h2>
+          <h2 class="section-title">Gợi ý Zones</h2>
           <table>
             <thead><tr><th>Zone</th><th>Reach</th><th>VI</th><th>CTR</th><th>CPM</th><th>Reason</th></tr></thead>
             <tbody>${zones.map(z => `<tr><td>${esc(z.zone_id)}</td><td>${fmt(z.reach)}</td><td>${z.vi_pct}%</td><td>${z.ctr_pct}%</td><td>${money(z.cpm_vnd)}</td><td>${esc(z.fit_reason)}</td></tr>`).join("")}</tbody>
           </table>
-          <div class="donebox" style="margin-top:12px">Zones selected by objective, price, and performance.</div>
-        ` : `<div class="notice">Zone recommendation is a separate step before DMP mapping.</div>`}
+          <div class="donebox" style="margin-top:12px">Zones đã được chọn theo objective, giá và performance.</div>
+        ` : `<div class="notice">Zones là bước riêng trước khi map DMP.</div>`}
       `;
     }
 
@@ -564,19 +564,19 @@
           </div>
           <div class="cols">
             <div>
-              <h2 class="section-title">Matched segments</h2>
+              <h2 class="section-title">Segments đã match</h2>
               <table><thead><tr><th>Segment</th><th>Size</th><th>Category</th></tr></thead><tbody>
               ${dmp.matched.map(s => `<tr><td>${esc(s.name)}</td><td>${fmt(s.size)}</td><td>${esc(s.category)}</td></tr>`).join("") || `<tr><td colspan="3">No segment matched</td></tr>`}
               </tbody></table>
             </div>
             <div>
-              <h2 class="section-title">Gaps and proxies</h2>
+              <h2 class="section-title">Gaps và proxy</h2>
               <table><thead><tr><th>Term</th><th>Proxy</th></tr></thead><tbody>
               ${dmp.gaps.map(g => `<tr><td><span class="badge bad">${esc(g.term)}</span></td><td>${esc(g.suggested_proxy)}</td></tr>`).join("") || `<tr><td colspan="2"><span class="badge good">No major gap</span></td></tr>`}
               </tbody></table>
             </div>
           </div>
-        ` : `<div class="notice">DMP uses the parsed brief target. Run mapping before campaign setup.</div>`}
+        ` : `<div class="notice">DMP dùng target đã parse từ brief. Hãy map DMP trước khi chạy Setup.</div>`}
       `;
     }
 
@@ -588,7 +588,7 @@
           <div class="donebox" style="margin-top:12px">${esc(setup.readout)}</div>
           <div class="cols">
             <div>
-              <h2 class="section-title">Budget split</h2>
+          <h2 class="section-title">Budget split</h2>
               <table><thead><tr><th>Zone</th><th>Share</th><th>Budget</th><th>CPM</th></tr></thead><tbody>
               ${setup.budget_split.map(row => `<tr><td>${esc(row.zone_id)}</td><td>${row.share_pct}%</td><td>${money(row.budget_vnd)}</td><td>${money(row.expected_cpm_vnd)}</td></tr>`).join("")}
               </tbody></table>
@@ -602,7 +602,7 @@
           </div>
           <h2 class="section-title">Bid strategy</h2>
           <pre>${esc(setup.bid_strategy)}</pre>
-        ` : `<div class="notice">Setup runs only after brief, creative, zone, and DMP steps are complete.</div>`}
+        ` : `<div class="notice">Setup chỉ chạy sau khi Brief, Creative, Zones và DMP đã xong.</div>`}
       `;
     }
 
@@ -617,11 +617,11 @@
             <div class="metric"><span>ROAS</span><b>${Number(report.total_roas).toFixed(2)}x</b></div>
             <div class="metric"><span>Bad</span><b>${report.verdict.bad}</b></div>
           </div>
-          <h2 class="section-title">Top records to review</h2>
+          <h2 class="section-title">Top records cần review</h2>
           <table><thead><tr><th>Campaign</th><th>Brand</th><th>Zone</th><th>ROAS</th><th>Hint</th></tr></thead><tbody>
           ${report.top_bad.slice(0, 6).map(r => `<tr><td>${esc(r.campaign_id)}</td><td>${esc(r.brand)}</td><td>${esc(r.zone)}</td><td>${esc(r.roas)}</td><td>${esc(r.hint)}</td></tr>`).join("")}
           </tbody></table>
-        ` : `<div class="notice">Report analysis is intentionally late in the flow, after setup is ready.</div>`}
+        ` : `<div class="notice">Report được phân tích sau khi Setup đã sẵn sàng.</div>`}
       `;
     }
 
@@ -633,7 +633,7 @@
           <h2 class="section-title">AO alert</h2>
           <div class="donebox">${esc(alert.subject)}</div>
           <pre>${esc(alert.body)}</pre>
-        ` : `<div class="notice">This final step creates the message for AO/account teams from report findings.</div>`}
+        ` : `<div class="notice">Bước cuối tạo message cho AO/account team từ kết quả Report.</div>`}
       `;
     }
 
@@ -654,8 +654,8 @@
       });
       state.brief = res.data;
       markDone(0);
-      me("Brief submitted");
-      bot(`Parsed ${state.brief.brand}. Funnel is ${state.brief.funnel_stage}; budget is ${money(state.brief.budget_vnd)}.`, "brief_parse");
+      me("Đã gửi Brief");
+      bot(`Đã parse ${state.brief.brand}. Funnel là ${state.brief.funnel_stage}; budget ${money(state.brief.budget_vnd)}.`, "brief_parse");
       renderAll();
     }
 
@@ -676,7 +676,7 @@
       }
       markDone(1);
       me(`Uploaded ${file.name}`);
-      bot(`Creative accepted: ${file.name}. Next I can recommend zones.`, "creative_inspect");
+      bot(`Creative đã được nhận: ${file.name}. Bước tiếp theo là gợi ý Zones.`, "creative_inspect");
       renderAll();
     }
 
@@ -690,7 +690,7 @@
       state.zones = res.data.zones;
       markDone(2);
       me("Recommend zones");
-      bot(`Recommended ${state.zones.length} zones for ${objective}, including price and performance signals.`, "zone_recommend");
+      bot(`Đã gợi ý ${state.zones.length} zones cho ${objective}, có kèm tín hiệu giá và performance.`, "zone_recommend");
       renderAll();
     }
 
@@ -704,7 +704,7 @@
       state.dmp = res.data;
       markDone(3);
       me("Map DMP segment");
-      bot(`Matched ${state.dmp.matched.length} segments, estimated size ${fmt(state.dmp.size_est)}, gaps ${state.dmp.gaps.length}.`, "dmp_match");
+      bot(`Đã match ${state.dmp.matched.length} segments, size ước tính ${fmt(state.dmp.size_est)}, gaps ${state.dmp.gaps.length}.`, "dmp_match");
       renderAll();
     }
 
@@ -726,7 +726,7 @@
       state.report = res.data;
       markDone(5);
       me("Analyze report");
-      bot(`Analyzed ${state.report.total_records} rows across ${state.report.reports} reports. ROAS is ${Number(state.report.total_roas).toFixed(2)}x.`, "report_analyze");
+      bot(`Đã phân tích ${state.report.total_records} rows trong ${state.report.reports} reports. ROAS ${Number(state.report.total_roas).toFixed(2)}x.`, "report_analyze");
       renderAll();
     }
 
@@ -763,7 +763,7 @@
 
     function botIntro() {
       const s = step();
-      bot(`Step ${state.current + 1}: ${s.title}. ${s.desc}`, s.tool);
+      bot(`Bước ${state.current + 1}: ${s.title}. ${s.desc}`, s.tool);
     }
 
     function restartFlow() {
@@ -779,7 +779,7 @@
       state.alert = null;
       state.chat = [];
       renderAll();
-      bot("Hi, I am Camp Ads Agent. I will guide the campaign flow step by step. Start with the Brief panel on the right.", "brief_parse");
+      bot("Xin chào, tôi là Campaign Ads Agent. Tôi sẽ dẫn bạn đi từng bước trong flow campaign. Bắt đầu ở panel Brief bên phải.", "brief_parse");
     }
 
     els.chatInput.addEventListener("keydown", event => {
