@@ -33,6 +33,7 @@ Camp Ads Agent automates the campaign ads lifecycle on synthetic data:
 | Report baseline | 99 good, 238 watch, 143 bad, total ROAS 2.60x |
 | Test baseline | `pytest -q` and `scripts/smoke_local.py` pass |
 | Docker baseline | Docker smoke has passed locally |
+| Model adapter | OpenAI-compatible adapter with mock fallback is implemented |
 | Cloud deploy | Not started; intentionally after local/eval gates |
 
 ## Phase Overview
@@ -42,7 +43,7 @@ Camp Ads Agent automates the campaign ads lifecycle on synthetic data:
 | 0 | Context and Repo Setup | Completed | P1 | Repo, skills, material context ready |
 | 1 | Local Mock Agent Base | Completed | P1 | FastAPI, mock APIs, tests, Docker smoke ready |
 | 2 | Prototype Alignment | In progress | P1 | Split chat/workspace progressive flow matches prototype direction |
-| 3 | Model Adapter and Agent Logic | Pending | P1 | OpenAI-compatible model adapter with task-to-model routing |
+| 3 | Model Adapter and Agent Logic | Completed | P1 | OpenAI-compatible model adapter with task-to-model routing |
 | 4 | Eval and Quality Gate | Pending | P1 | Golden cases pass parity and stability thresholds |
 | 5 | AgentBase Cloud Deploy | Pending | P1 | Runtime deployed and health verified on GreenNode AgentBase |
 | 6 | Demo and Submission Polish | Pending | P2 | Demo script, video, README/runbook, final freeze |
@@ -146,7 +147,9 @@ Make the local UI follow `Camp_Ads_Agent_Prototype_v2.html`: left side is `CHAT`
 
 ## Phase 3: Model Adapter and Agent Logic
 
-Status: Pending
+Status: Completed
+
+Detailed plan: `plans/phase-03-model-adapter.md`
 
 ### Goal
 
@@ -168,8 +171,8 @@ Use the current contest model names from the user:
 
 ### Implementation Targets
 
-- Create a single model boundary, likely `app/llm.py`.
-- Add task-to-model config, likely `config/models.yaml` or equivalent.
+- Create a single model boundary: `app/llm.py`.
+- Add task-to-model config: `config/models.json`.
 - Support env-based config:
   - `MAAS_BASE_URL` or `LLM_BASE_URL`
   - `MAAS_API_KEY` or `LLM_API_KEY`
@@ -181,13 +184,22 @@ Use the current contest model names from the user:
   - repair retry if needed
 - Keep mock/deterministic fallback available so demos do not fail when model credentials are absent.
 
+### Delivered
+
+- `config/models.json` maps each task to the model that fits its role.
+- `app/llm.py` provides OpenAI-compatible `call_llm` and `call_llm_json`.
+- Live mode is opt-in through env; mock fallback is the default.
+- `/api/context` exposes current model routing without secrets.
+- Setup, DMP, report, AO alert, and invocation responses include additive LLM route/readout metadata.
+- Tests cover routing, env override, mock fallback, context safety, and invocation route metadata.
+
 ### Acceptance
 
-- App still runs without cloud keys in mock mode.
-- Model adapter can be enabled by env/config only.
-- No API keys are committed.
-- Tests cover adapter fallback and task routing.
-- Core deterministic results do not regress.
+- [x] App still runs without cloud keys in mock mode.
+- [x] Model adapter can be enabled by env/config only.
+- [x] No API keys are committed.
+- [x] Tests cover adapter fallback and task routing.
+- [x] Core deterministic results do not regress.
 
 ## Phase 4: Eval and Quality Gate
 

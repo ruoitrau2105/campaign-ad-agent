@@ -22,8 +22,34 @@ The project follows a deterministic-first custom agent approach:
 - Agent-style `POST /invocations` endpoint for local and container contract tests.
 - Local mock data before any cloud deployment.
 - Python business logic for scoring, DMP matching, budget split, and report thresholds.
-- OpenAI-compatible MaaS/LLM adapter planned after the deterministic mock workflow is validated.
+- OpenAI-compatible MaaS/LLM adapter with mock fallback.
 - AgentBase deployment only after local and Docker validation pass.
+
+## Model Routing
+
+Phase 3 adds a single OpenAI-compatible adapter with mock fallback:
+
+```text
+app/llm.py
+config/models.json
+```
+
+Task routing:
+
+- `chat_orchestration`, `brief_parse`, `ao_alert` -> Qwen 3.5 27B.
+- `segment_explain`, `setup_explain`, `report_explain` -> Gemma 4 31B-IT.
+- `developer_support` -> MiniMax M2.5, build-time only.
+
+Local mode stays mock by default. To enable live MaaS calls later, configure:
+
+```powershell
+$env:CAMP_ADS_LLM_MODE = "live"
+$env:LLM_BASE_URL = "https://maas-llm-aiplatform-hcm.api.vngcloud.vn/v1"
+$env:LLM_API_KEY = "<set outside git>"
+$env:LLM_MODEL_BRIEF_PARSE = "<GreenNode model path>"
+```
+
+Use the GreenNode model `path` from the platform catalog for each `LLM_MODEL_*` override.
 
 ## Roadmap
 
@@ -42,6 +68,7 @@ Current implementation plan:
 ```text
 plans/roadmap.md
 plans/phase-02-prototype-alignment.md
+plans/phase-03-model-adapter.md
 ```
 
 Create a virtual environment and install dependencies:

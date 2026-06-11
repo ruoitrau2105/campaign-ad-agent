@@ -1,0 +1,66 @@
+{
+  "provider": {
+    "name": "GreenNode AI Platform",
+    "base_url": "https://maas-llm-aiplatform-hcm.api.vngcloud.vn/v1",
+    "base_url_env": ["MAAS_BASE_URL", "LLM_BASE_URL"],
+    "api_key_env": ["MAAS_API_KEY", "LLM_API_KEY"]
+  },
+  "tasks": {
+    "chat_orchestration": {
+      "model": "Qwen 3.5 27B",
+      "model_env": "LLM_MODEL_CHAT_ORCHESTRATION",
+      "runtime": true,
+      "temperature": 0.2,
+      "output": "text",
+      "strength": "Fast conversational routing, Vietnamese/English chat handling, and short operator guidance."
+    },
+    "brief_parse": {
+      "model": "Qwen 3.5 27B",
+      "model_env": "LLM_MODEL_BRIEF_PARSE",
+      "runtime": true,
+      "temperature": 0.1,
+      "output": "json",
+      "strength": "Good fit for turning natural campaign briefs into structured JSON while staying responsive in chat."
+    },
+    "segment_explain": {
+      "model": "Gemma 4 31B-IT",
+      "model_env": "LLM_MODEL_SEGMENT_EXPLAIN",
+      "runtime": true,
+      "temperature": 0.2,
+      "output": "text",
+      "strength": "Stronger structured reasoning for explaining DMP matches, gaps, and proxy segment choices."
+    },
+    "setup_explain": {
+      "model": "Gemma 4 31B-IT",
+      "model_env": "LLM_MODEL_SETUP_EXPLAIN",
+      "runtime": true,
+      "temperature": 0.2,
+      "output": "text",
+      "strength": "Good for explaining campaign setup tradeoffs while Python owns budgets, bids, and zone scoring."
+    },
+    "report_explain": {
+      "model": "Gemma 4 31B-IT",
+      "model_env": "LLM_MODEL_REPORT_EXPLAIN",
+      "runtime": true,
+      "temperature": 0.15,
+      "output": "text",
+      "strength": "Best runtime choice for structured report interpretation over good/watch/bad campaign records."
+    },
+    "ao_alert": {
+      "model": "Qwen 3.5 27B",
+      "model_env": "LLM_MODEL_AO_ALERT",
+      "runtime": true,
+      "temperature": 0.25,
+      "output": "text",
+      "strength": "Good for concise AO/account-facing alert copy and action-oriented Vietnamese/English messaging."
+    },
+    "developer_support": {
+      "model": "MiniMax M2.5",
+      "model_env": "LLM_MODEL_DEVELOPER_SUPPORT",
+      "runtime": false,
+      "temperature": 0.1,
+      "output": "text",
+      "strength": "Reserved for heavy development, code generation, and build-time support; not part of the demo runtime path."
+    }
+  }
+}
