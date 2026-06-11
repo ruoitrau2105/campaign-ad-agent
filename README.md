@@ -25,11 +25,22 @@ The project follows a deterministic-first custom agent approach:
 - OpenAI-compatible MaaS/LLM adapter planned after the deterministic mock workflow is validated.
 - AgentBase deployment only after local and Docker validation pass.
 
+## Roadmap
+
+The persistent implementation roadmap is in:
+
+```text
+plans/roadmap.md
+```
+
+Use that file as the source of truth for phase status, acceptance criteria, and next steps across sessions.
+
 ## Phase 1 Local Setup
 
 Current implementation plan:
 
 ```text
+plans/roadmap.md
 plans/phase-02-prototype-alignment.md
 ```
 
