@@ -35,7 +35,7 @@ Camp Ads Agent automates the campaign ads lifecycle on synthetic data:
 | Docker baseline | Docker smoke has passed locally |
 | Model adapter | OpenAI-compatible adapter with mock fallback is implemented |
 | Eval gate | 18 golden cases pass with 100% field accuracy and route match |
-| Cloud deploy | Not started; intentionally after local/eval gates |
+| Cloud deploy | Blocked on IAM credentials and jq for AgentBase scripts |
 
 ## Phase Overview
 
@@ -46,7 +46,7 @@ Camp Ads Agent automates the campaign ads lifecycle on synthetic data:
 | 2 | Prototype Alignment | In progress | P1 | Split chat/workspace progressive flow matches prototype direction |
 | 3 | Model Adapter and Agent Logic | Completed | P1 | OpenAI-compatible model adapter with task-to-model routing |
 | 4 | Eval and Quality Gate | Completed | P1 | Golden cases pass parity and stability thresholds |
-| 5 | AgentBase Cloud Deploy | Pending | P1 | Runtime deployed and health verified on GreenNode AgentBase |
+| 5 | AgentBase Cloud Deploy | Blocked | P1 | Runtime deployed and health verified on GreenNode AgentBase |
 | 6 | Demo and Submission Polish | Pending | P2 | Demo script, video, README/runbook, final freeze |
 
 ## Phase 0: Context and Repo Setup
@@ -254,7 +254,9 @@ Create an eval gate before any AgentBase cloud deployment. This prevents deployi
 
 ## Phase 5: AgentBase Cloud Deploy
 
-Status: Pending
+Status: Blocked on environment prerequisites
+
+Detailed plan: `plans/phase-05-agentbase-deploy.md`
 
 ### Goal
 
@@ -271,12 +273,23 @@ Use the Custom Agent path:
 
 ### Implementation Targets
 
-- Verify Dockerfile for linux/amd64.
-- Build final image.
-- Push to the required registry if AgentBase flow requires it.
-- Deploy with GreenNode AgentBase deploy skill.
-- Monitor runtime logs and health.
-- Record runtime ID, endpoint, image tag, and deploy notes in a deploy log.
+- [x] Verify Dockerfile and runtime contract for port `8080` and `/health`.
+- [x] Re-run local, eval, and Docker smoke gates.
+- [x] Add deploy preflight script: `scripts/agentbase_preflight.ps1`.
+- [ ] Install or expose `jq` to Git Bash.
+- [ ] Configure AgentBase IAM credentials using official helper scripts.
+- [ ] Fetch AgentBase managed CR repo metadata.
+- [ ] Build final `linux/amd64` image with CR image URL.
+- [ ] Push image to AgentBase managed CR.
+- [ ] Create/update runtime with GreenNode AgentBase deploy skill.
+- [ ] Monitor runtime logs and health.
+- [ ] Record runtime ID, endpoint, image tag, and deploy notes in a deploy log.
+
+### Current Blockers
+
+- `check_credentials.sh iam` reports IAM credentials missing.
+- AgentBase scripts that call APIs report `jq` missing.
+- No cloud resources were created or modified in this phase attempt.
 
 ### Acceptance
 

@@ -71,6 +71,25 @@ Fatal errors = 0
 
 Generated eval reports are written under `evals/results/` and are ignored by git.
 
+## AgentBase Deploy Preflight
+
+Phase 5 uses the Custom Agent path on GreenNode AgentBase. Before cloud deploy, run:
+
+```powershell
+.\scripts\agentbase_preflight.ps1 -RunLocalGates
+```
+
+Current deploy blockers:
+
+- IAM credentials are not configured for the official AgentBase scripts.
+- `jq` is not installed or not visible to Git Bash.
+
+Detailed deploy runbook:
+
+```text
+plans/phase-05-agentbase-deploy.md
+```
+
 ## Roadmap
 
 The persistent implementation roadmap is in:
@@ -90,6 +109,7 @@ plans/roadmap.md
 plans/phase-02-prototype-alignment.md
 plans/phase-03-model-adapter.md
 plans/phase-04-eval-quality-gate.md
+plans/phase-05-agentbase-deploy.md
 ```
 
 Create a virtual environment and install dependencies:
