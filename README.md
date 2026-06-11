@@ -55,6 +55,18 @@ Run tests:
 pytest -q
 ```
 
+Run local HTTP smoke checks against a running server:
+
+```powershell
+python scripts\smoke_local.py --base-url http://127.0.0.1:8080
+```
+
+Run Docker build and container smoke checks after Docker Desktop is running:
+
+```powershell
+.\scripts\smoke_docker.ps1
+```
+
 ## API Surface
 
 - `GET /health` - runtime health check.
