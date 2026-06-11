@@ -66,6 +66,7 @@ plans/**/*
 screenshots/*
 docs/screenshots/*
 logs.txt
+tmp_uvicorn_*.log
 test-ck
 __pycache__
 
