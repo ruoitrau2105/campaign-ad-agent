@@ -24,6 +24,46 @@ The project follows a deterministic-first custom agent approach:
 - A single OpenAI-compatible LLM adapter for brief parsing, explanations, and alert drafting.
 - AgentBase deployment only after local and Docker validation pass.
 
+## Phase 1 Local Setup
+
+Create a virtual environment and install dependencies:
+
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+Generate sanitized mock data from local contest material:
+
+```powershell
+python scripts\extract_mock_data.py
+```
+
+Run the app:
+
+```powershell
+uvicorn app.main:app --host 127.0.0.1 --port 8080
+```
+
+Open `http://127.0.0.1:8080` for the mock UI.
+
+Run tests:
+
+```powershell
+pytest -q
+```
+
+## API Surface
+
+- `GET /health` - runtime health check.
+- `GET /api/context` - project, model, and baseline context.
+- `GET /api/zones` - ad zone catalog.
+- `POST /api/zones/recommend` - deterministic zone recommendations by objective.
+- `GET /api/reports/summary` - 15-report baseline summary.
+- `GET /api/reports/analyze` - good/watch/bad analysis and top records.
+- `POST /api/brief/parse` - mock brief parser for local development.
+
 ## Current Baseline
 
 - 15 synthetic campaign reports.
@@ -39,4 +79,3 @@ The project is developed and tested locally first. Deployment to GreenNode Agent
 - API contract tests pass.
 - UI flow works end to end.
 - Docker build and health check pass.
-

@@ -1,0 +1,166 @@
+{
+  "total": {
+    "total_records": 480,
+    "reports": 15,
+    "verdict": {
+      "good": 99,
+      "watch": 238,
+      "bad": 143
+    },
+    "total_spend_vnd": 2337277506,
+    "total_revenue_vnd": 6079913593,
+    "total_roas": 2.6013
+  },
+  "reports": [
+    {
+      "sheet": "AW01_Travel_Awareness",
+      "rows": 32,
+      "good": 3,
+      "watch": 20,
+      "bad": 9,
+      "spend_vnd": 115792489,
+      "revenue_vnd": 32031008,
+      "roas": 0.2766
+    },
+    {
+      "sheet": "AW02_FMCG_Awareness",
+      "rows": 32,
+      "good": 1,
+      "watch": 20,
+      "bad": 11,
+      "spend_vnd": 131143437,
+      "revenue_vnd": 40605356,
+      "roas": 0.3096
+    },
+    {
+      "sheet": "AW03_Auto_Awareness",
+      "rows": 32,
+      "good": 1,
+      "watch": 14,
+      "bad": 17,
+      "spend_vnd": 128444971,
+      "revenue_vnd": 43353700,
+      "roas": 0.3375
+    },
+    {
+      "sheet": "AW04_Beauty_Awareness",
+      "rows": 32,
+      "good": 4,
+      "watch": 16,
+      "bad": 12,
+      "spend_vnd": 399054375,
+      "revenue_vnd": 161589642,
+      "roas": 0.4049
+    },
+    {
+      "sheet": "CO01_Banking_Consider",
+      "rows": 32,
+      "good": 4,
+      "watch": 19,
+      "bad": 9,
+      "spend_vnd": 185187073,
+      "revenue_vnd": 209105944,
+      "roas": 1.1292
+    },
+    {
+      "sheet": "CO02_Edu_Consider",
+      "rows": 32,
+      "good": 6,
+      "watch": 20,
+      "bad": 6,
+      "spend_vnd": 145796151,
+      "revenue_vnd": 178101250,
+      "roas": 1.2216
+    },
+    {
+      "sheet": "CO03_RealEstate_Consider",
+      "rows": 32,
+      "good": 2,
+      "watch": 19,
+      "bad": 11,
+      "spend_vnd": 187483373,
+      "revenue_vnd": 204674058,
+      "roas": 1.0917
+    },
+    {
+      "sheet": "CO04_Travel_Consider",
+      "rows": 32,
+      "good": 7,
+      "watch": 18,
+      "bad": 7,
+      "spend_vnd": 137446396,
+      "revenue_vnd": 162719652,
+      "roas": 1.1839
+    },
+    {
+      "sheet": "CV01_Insurance_Conv",
+      "rows": 32,
+      "good": 11,
+      "watch": 15,
+      "bad": 6,
+      "spend_vnd": 176562917,
+      "revenue_vnd": 699385277,
+      "roas": 3.9611
+    },
+    {
+      "sheet": "CV02_Ecommerce_Conv",
+      "rows": 32,
+      "good": 10,
+      "watch": 13,
+      "bad": 9,
+      "spend_vnd": 155198390,
+      "revenue_vnd": 598768700,
+      "roas": 3.8581
+    },
+    {
+      "sheet": "CV03_Finance_Conv",
+      "rows": 32,
+      "good": 13,
+      "watch": 11,
+      "bad": 8,
+      "spend_vnd": 163938654,
+      "revenue_vnd": 771414894,
+      "roas": 4.7055
+    },
+    {
+      "sheet": "CV04_Retail_Conv",
+      "rows": 32,
+      "good": 13,
+      "watch": 11,
+      "bad": 8,
+      "spend_vnd": 98143924,
+      "revenue_vnd": 266218740,
+      "roas": 2.7125
+    },
+    {
+      "sheet": "RT01_Loyalty_Retention",
+      "rows": 32,
+      "good": 6,
+      "watch": 14,
+      "bad": 12,
+      "spend_vnd": 129975091,
+      "revenue_vnd": 1533654746,
+      "roas": 11.7996
+    },
+    {
+      "sheet": "RT02_Telco_Reactivation",
+      "rows": 32,
+      "good": 9,
+      "watch": 14,
+      "bad": 9,
+      "spend_vnd": 94012790,
+      "revenue_vnd": 615744611,
+      "roas": 6.5496
+    },
+    {
+      "sheet": "RT03_Retail_Loyalty",
+      "rows": 32,
+      "good": 9,
+      "watch": 14,
+      "bad": 9,
+      "spend_vnd": 89097475,
+      "revenue_vnd": 562546015,
+      "roas": 6.3138
+    }
+  ]
+}

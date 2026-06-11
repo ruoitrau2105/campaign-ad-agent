@@ -1,0 +1,17 @@
+.git/
+.agents/
+.claude/
+.codex/
+.agentbase/
+.agentbase-state.json
+.greennode.json
+.env
+.env.*
+__pycache__/
+*.py[cod]
+.pytest_cache/
+venv/
+.venv/
+clawathon_material/
+plans/
+release-manifest.json

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Camp Ads Agent</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, Segoe UI, system-ui, sans-serif; }
+    body { margin: 0; background: #f4f7f5; color: #17221b; }
+    header { padding: 18px 24px; background: #145c2c; color: white; display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+    header h1 { margin: 0; font-size: 20px; letter-spacing: 0; }
+    header span { font-size: 13px; opacity: .86; }
+    main { max-width: 1180px; margin: 0 auto; padding: 22px; display: grid; grid-template-columns: 380px 1fr; gap: 16px; }
+    section { background: white; border: 1px solid #dbe5de; border-radius: 8px; padding: 16px; }
+    h2 { font-size: 15px; margin: 0 0 12px; }
+    textarea, select, input { width: 100%; box-sizing: border-box; border: 1px solid #cbd8cf; border-radius: 6px; padding: 10px; font: inherit; }
+    textarea { min-height: 160px; resize: vertical; }
+    button { border: 0; border-radius: 6px; background: #1f7a3d; color: white; font-weight: 700; padding: 10px 14px; cursor: pointer; }
+    button.secondary { background: #1f3551; }
+    .row { display: flex; gap: 8px; margin-top: 10px; }
+    .row > * { flex: 1; }
+    .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+    .metric { background: #f4f8f5; border: 1px solid #dbe5de; border-radius: 6px; padding: 10px; }
+    .metric b { display: block; font-size: 18px; color: #145c2c; }
+    .metric span { color: #5b6b60; font-size: 11px; text-transform: uppercase; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { border-bottom: 1px solid #e5ece8; text-align: left; padding: 8px; vertical-align: top; }
+    th { color: #5b6b60; font-size: 11px; text-transform: uppercase; }
+    pre { background: #102018; color: #d9f1df; border-radius: 6px; padding: 12px; overflow: auto; max-height: 300px; }
+    @media (max-width: 920px) { main { grid-template-columns: 1fr; } .metric-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Camp Ads Agent</h1>
+    <span>Mock-first base agent · FastAPI custom workflow</span>
+  </header>
+  <main>
+    <section>
+      <h2>Brief</h2>
+      <textarea id="brief">Brand: FlyDragon Airlines
+Tăng nhận biết nhóm có ý định du lịch SEA. Budget 425 triệu. KPI Reach, CPM, VTR. Target travel, air travel, hotels.</textarea>
+      <div class="row">
+        <button onclick="parseBrief()">Parse brief</button>
+        <button class="secondary" onclick="recommend()">Recommend zones</button>
+      </div>
+      <h2 style="margin-top:18px">Creative Upload</h2>
+      <input type="file" id="creative">
+      <p id="creativeName" style="font-size:13px;color:#5b6b60"></p>
+    </section>
+    <section>
+      <h2>Report Baseline</h2>
+      <div class="metric-grid" id="metrics"></div>
+      <h2>Zone Recommendations</h2>
+      <table>
+        <thead><tr><th>Zone</th><th>Objective</th><th>Reach</th><th>VI</th><th>CTR</th><th>CPM</th><th>Score</th></tr></thead>
+        <tbody id="zones"></tbody>
+      </table>
+      <h2 style="margin-top:18px">Agent Output</h2>
+      <pre id="output">Loading context...</pre>
+    </section>
+  </main>
+  <script>
+    const out = document.getElementById("output");
+    document.getElementById("creative").addEventListener("change", e => {
+      const file = e.target.files[0];
+      document.getElementById("creativeName").textContent = file ? `${file.name} · ${(file.size/1024).toFixed(1)} KB` : "";
+    });
+
+    async function api(path, options) {
+      const res = await fetch(path, options);
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      return res.json();
+    }
+
+    async function load() {
+      const summary = await api("/api/reports/summary");
+      renderMetrics(summary.data.total);
+      out.textContent = JSON.stringify(await api("/api/context"), null, 2);
+      await recommend();
+    }
+
+    function renderMetrics(total) {
+      document.getElementById("metrics").innerHTML = [
+        ["Records", total.total_records],
+        ["Reports", total.reports],
+        ["Good / Watch / Bad", `${total.verdict.good} / ${total.verdict.watch} / ${total.verdict.bad}`],
+        ["ROAS", `${Number(total.total_roas).toFixed(2)}x`],
+      ].map(([label, value]) => `<div class="metric"><span>${label}</span><b>${value}</b></div>`).join("");
+    }
+
+    async function parseBrief() {
+      const data = await api("/api/brief/parse", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({text: document.getElementById("brief").value})
+      });
+      out.textContent = JSON.stringify(data, null, 2);
+    }
+
+    async function recommend() {
+      const parsed = await api("/api/brief/parse", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({text: document.getElementById("brief").value})
+      });
+      const data = await api("/api/zones/recommend", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({objective: parsed.data.funnel_stage, budget_vnd: parsed.data.budget_vnd, top_n: 5})
+      });
+      document.getElementById("zones").innerHTML = data.data.zones.map(z => `
+        <tr><td>${z.zone_id}</td><td>${z.objective}</td><td>${Number(z.reach).toLocaleString("vi-VN")}</td><td>${z.vi_pct}%</td><td>${z.ctr_pct}%</td><td>${Number(z.cpm_vnd).toLocaleString("vi-VN")}đ</td><td>${z.score}</td></tr>
+      `).join("");
+      out.textContent = JSON.stringify({brief: parsed.data, recommendation: data.data}, null, 2);
+    }
+
+    load().catch(err => out.textContent = String(err));
+  </script>
+</body>
+</html>
