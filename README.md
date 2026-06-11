@@ -51,6 +51,26 @@ $env:LLM_MODEL_BRIEF_PARSE = "<GreenNode model path>"
 
 Use the GreenNode model `path` from the platform catalog for each `LLM_MODEL_*` override.
 
+## Eval Gate
+
+Phase 4 adds deterministic golden evals:
+
+```powershell
+python evals\run.py
+```
+
+Current gate:
+
+```text
+18 golden cases
+JSON valid rate >= 90%
+Deterministic field accuracy >= 99%
+Model route match >= 85%
+Fatal errors = 0
+```
+
+Generated eval reports are written under `evals/results/` and are ignored by git.
+
 ## Roadmap
 
 The persistent implementation roadmap is in:
@@ -69,6 +89,7 @@ Current implementation plan:
 plans/roadmap.md
 plans/phase-02-prototype-alignment.md
 plans/phase-03-model-adapter.md
+plans/phase-04-eval-quality-gate.md
 ```
 
 Create a virtual environment and install dependencies:

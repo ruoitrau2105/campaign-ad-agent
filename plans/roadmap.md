@@ -34,6 +34,7 @@ Camp Ads Agent automates the campaign ads lifecycle on synthetic data:
 | Test baseline | `pytest -q` and `scripts/smoke_local.py` pass |
 | Docker baseline | Docker smoke has passed locally |
 | Model adapter | OpenAI-compatible adapter with mock fallback is implemented |
+| Eval gate | 18 golden cases pass with 100% field accuracy and route match |
 | Cloud deploy | Not started; intentionally after local/eval gates |
 
 ## Phase Overview
@@ -44,7 +45,7 @@ Camp Ads Agent automates the campaign ads lifecycle on synthetic data:
 | 1 | Local Mock Agent Base | Completed | P1 | FastAPI, mock APIs, tests, Docker smoke ready |
 | 2 | Prototype Alignment | In progress | P1 | Split chat/workspace progressive flow matches prototype direction |
 | 3 | Model Adapter and Agent Logic | Completed | P1 | OpenAI-compatible model adapter with task-to-model routing |
-| 4 | Eval and Quality Gate | Pending | P1 | Golden cases pass parity and stability thresholds |
+| 4 | Eval and Quality Gate | Completed | P1 | Golden cases pass parity and stability thresholds |
 | 5 | AgentBase Cloud Deploy | Pending | P1 | Runtime deployed and health verified on GreenNode AgentBase |
 | 6 | Demo and Submission Polish | Pending | P2 | Demo script, video, README/runbook, final freeze |
 
@@ -203,7 +204,9 @@ Use the current contest model names from the user:
 
 ## Phase 4: Eval and Quality Gate
 
-Status: Pending
+Status: Completed
+
+Detailed plan: `plans/phase-04-eval-quality-gate.md`
 
 ### Goal
 
@@ -228,14 +231,22 @@ Create an eval gate before any AgentBase cloud deployment. This prevents deployi
 
 - Add `evals/cases.jsonl`.
 - Add `evals/run.py`.
-- Add report output under `evals/results/` or `plans/reports/`.
-- Add Make/PowerShell command or README command for running eval.
+- Add report output under `evals/results/`.
+- Add README command for running eval.
+
+### Delivered
+
+- Added 18 golden cases covering brief, zone, DMP, setup, report, alert, and invocation flows.
+- Added eval runner with JSON valid rate, deterministic field accuracy, model route match, and fatal error metrics.
+- Added generated JSON/Markdown reports under ignored `evals/results/`.
+- Added pytest coverage for the eval gate.
+- Current result: `Eval PASS: 18/18 cases, field accuracy 100.00%, JSON valid 100.00%, route match 100.00%`.
 
 ### Acceptance
 
-- Eval command runs locally.
-- Results are reproducible enough for demo confidence.
-- Any failing cases are documented with mitigation:
+- [x] Eval command runs locally.
+- [x] Results are reproducible enough for demo confidence.
+- [x] Any failing cases are documented with mitigation:
   - adjust prompt
   - add few-shot
   - move logic to Python
