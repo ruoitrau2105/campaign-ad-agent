@@ -49,6 +49,12 @@ class AlertRequest(BaseModel):
     max_items: int = Field(default=8, ge=1, le=20)
 
 
+class InvocationRequest(BaseModel):
+    message: str = ""
+    creative: dict[str, Any] | None = None
+    top_n: int = Field(default=5, ge=1, le=10)
+
+
 class ApiResponse(BaseModel):
     status: Literal["ok"] = "ok"
     data: Any

@@ -93,3 +93,35 @@ def test_creative_inspect_and_ao_alert() -> None:
     assert "143 bad records" in data["subject"]
     assert len(data["priority_records"]) == 4
     assert data["summary"]["total_roas"] == 2.6
+
+
+def test_invocations_agent_chat_contract() -> None:
+    response = client.post(
+        "/invocations",
+        json={
+            "message": "Brand: ShieldCare. Setup lead bao hiem suc khoe, budget 150 trieu, KPI CPL ROAS.",
+            "creative": {"filename": "shieldcare-banner.png", "content_type": "image/png", "size_bytes": 2048},
+            "top_n": 5,
+        },
+    )
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["action"] == "setup_plan"
+    assert data["result"]["brief"]["brand"] == "ShieldCare"
+    assert data["result"]["brief"]["funnel_stage"] == "conversion"
+    assert sum(row["budget_vnd"] for row in data["result"]["budget_split"]) == 150_000_000
+
+
+def test_invocations_empty_message_is_graceful() -> None:
+    response = client.post("/invocations", json={})
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["action"] == "guidance"
+
+
+def test_invocations_alert_contract() -> None:
+    response = client.post("/invocations", json={"message": "Create AO alert"})
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["action"] == "ao_alert"
+    assert "143 bad records" in data["reply"]

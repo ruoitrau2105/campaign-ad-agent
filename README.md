@@ -19,9 +19,10 @@ The agent helps an ad operations team move from campaign brief to campaign setup
 The project follows a deterministic-first custom agent approach:
 
 - FastAPI runtime with `GET /health` on port `8080`.
+- Agent-style `POST /invocations` endpoint for local and container contract tests.
 - Local mock data before any cloud deployment.
 - Python business logic for scoring, DMP matching, budget split, and report thresholds.
-- A single OpenAI-compatible LLM adapter for brief parsing, explanations, and alert drafting.
+- OpenAI-compatible MaaS/LLM adapter planned after the deterministic mock workflow is validated.
 - AgentBase deployment only after local and Docker validation pass.
 
 ## Phase 1 Local Setup
@@ -57,11 +58,18 @@ pytest -q
 ## API Surface
 
 - `GET /health` - runtime health check.
+- `POST /invocations` - agent-style message endpoint for brief setup, report analysis, or AO alert routing.
+- `POST /api/chat` - workspace chat alias for `POST /invocations`.
 - `GET /api/context` - project, model, and baseline context.
 - `GET /api/zones` - ad zone catalog.
 - `POST /api/zones/recommend` - deterministic zone recommendations by objective.
+- `GET /api/dmp/segments` - mock DMP segment catalog.
+- `POST /api/dmp/match` - target-to-DMP segment matching and gap detection.
+- `POST /api/creative/inspect` - upload and inspect creative metadata for the prototype.
+- `POST /api/setup/plan` - full mock campaign setup plan from brief, creative, zones, and DMP.
 - `GET /api/reports/summary` - 15-report baseline summary.
 - `GET /api/reports/analyze` - good/watch/bad analysis and top records.
+- `POST /api/alerts/ao` - AO/account action alert from bad-performing records.
 - `POST /api/brief/parse` - mock brief parser for local development.
 
 ## Current Baseline

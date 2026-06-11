@@ -5,6 +5,7 @@
 .agentbase/
 .agentbase-state.json
 .greennode.json
+*.credentials.json
 .env
 .env.*
 __pycache__/

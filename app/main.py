@@ -6,6 +6,7 @@ from app.data_loader import load_campaign_reports, load_dmp_segments, load_repor
 from app.logic.brief_parser import parse_brief_mock
 from app.logic.alert_builder import build_ao_alert
 from app.logic.dmp_match import match_dmp_segments
+from app.logic.invocation import run_invocation
 from app.logic.report_analyzer import summarize_reports
 from app.logic.setup_planner import build_setup_plan
 from app.logic.zone_scoring import recommend_zones
@@ -14,6 +15,7 @@ from app.schemas import (
     ApiResponse,
     BriefParseRequest,
     DmpMatchRequest,
+    InvocationRequest,
     SetupPlanRequest,
     ZoneRecommendationRequest,
 )
@@ -31,6 +33,25 @@ def index() -> FileResponse:
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "healthy"}
+
+
+@app.post("/invocations", response_model=ApiResponse)
+def invocations(payload: InvocationRequest) -> ApiResponse:
+    return ApiResponse(
+        data=run_invocation(
+            message=payload.message,
+            zones=load_zones(),
+            dmp_segments=load_dmp_segments(),
+            reports=load_campaign_reports(),
+            creative=payload.creative,
+            top_n=payload.top_n,
+        )
+    )
+
+
+@app.post("/api/chat", response_model=ApiResponse)
+def chat(payload: InvocationRequest) -> ApiResponse:
+    return invocations(payload)
 
 
 @app.get("/api/context", response_model=ApiResponse)
