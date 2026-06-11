@@ -62,7 +62,19 @@ def check_ui_root(client: httpx.Client) -> None:
     response = client.get("/")
     _assert(response.status_code == 200, f"status {response.status_code}")
     html = response.text
-    for text in ["Camp Ads Agent", "Run setup", 'type="file"', "Build alert"]:
+    for text in [
+        "Camp Ads Agent",
+        "Split Chat + Workspace",
+        "progressive disclosure",
+        "CHAT",
+        "WORKSPACE",
+        "Parse brief",
+        'type="file"',
+        "Recommend zones",
+        "Map DMP segment",
+        "Run setup",
+        "Build alert",
+    ]:
         _assert(text in html, f"missing UI text: {text}")
 
 

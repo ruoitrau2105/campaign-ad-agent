@@ -27,6 +27,12 @@ The project follows a deterministic-first custom agent approach:
 
 ## Phase 1 Local Setup
 
+Current implementation plan:
+
+```text
+plans/phase-02-prototype-alignment.md
+```
+
 Create a virtual environment and install dependencies:
 
 ```powershell
