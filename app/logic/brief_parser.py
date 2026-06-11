@@ -55,11 +55,11 @@ def parse_brief_mock(text: str) -> CampaignBrief:
 def _extract_budget_vnd(text: str) -> int | None:
     import re
 
-    match = re.search(r"(\d+(?:[.,]\d+)?)\s*(m|mn|million|triệu|ty|tỷ|billion)", text)
+    match = re.search(r"(\d+(?:[.,]\d+)?)\s*(m|mn|million|trieu|triệu|ti|ty|tỷ|billion)", text)
     if not match:
         return None
     value = float(match.group(1).replace(",", "."))
     unit = match.group(2)
-    if unit in {"ty", "tỷ", "billion"}:
+    if unit in {"ti", "ty", "tỷ", "billion"}:
         return int(value * 1_000_000_000)
     return int(value * 1_000_000)

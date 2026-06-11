@@ -27,3 +27,8 @@ def load_campaign_reports() -> list[dict[str, Any]]:
 @lru_cache(maxsize=1)
 def load_report_summary() -> dict[str, Any]:
     return _read_json("report_summary.json")
+
+
+@lru_cache(maxsize=1)
+def load_dmp_segments() -> list[dict[str, Any]]:
+    return _read_json("dmp_segments.json")

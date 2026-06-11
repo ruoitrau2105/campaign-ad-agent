@@ -1,0 +1,72 @@
+[
+  {
+    "key": "travel_intent_sea",
+    "name": "Travel Intent SEA",
+    "aliases": ["Travel", "Du lich", "SEA travel", "travel intent"],
+    "size": 1850000,
+    "category": "interest"
+  },
+  {
+    "key": "air_travel",
+    "name": "Air Travel Enthusiast",
+    "aliases": ["Air travel", "Flight booking", "Airline"],
+    "size": 2200000,
+    "category": "behavior"
+  },
+  {
+    "key": "hotel_booker",
+    "name": "Hotel Booker",
+    "aliases": ["Hotels", "Hotel booking", "Resort"],
+    "size": 1430000,
+    "category": "behavior"
+  },
+  {
+    "key": "credit_card_user",
+    "name": "Credit Card Active User",
+    "aliases": ["Credit cards", "Credit card", "Card user"],
+    "size": 3100000,
+    "category": "finance"
+  },
+  {
+    "key": "fintech_high_value",
+    "name": "Finance Interest",
+    "aliases": ["Finance", "Tai chinh", "Personal finance", "Fintech"],
+    "size": 680000,
+    "category": "finance"
+  },
+  {
+    "key": "premium_lifestyle",
+    "name": "Premium Lifestyle",
+    "aliases": ["Premium", "Luxury", "High income", "Health", "Beauty"],
+    "size": 920000,
+    "category": "interest"
+  },
+  {
+    "key": "new_parent",
+    "name": "New Parent",
+    "aliases": ["Parenting", "Co con nho", "Family"],
+    "size": 760000,
+    "category": "life_stage"
+  },
+  {
+    "key": "first_jobber",
+    "name": "First Jobber",
+    "aliases": ["Retail shoppers", "Ecommerce shoppers", "First jobber", "Retail"],
+    "size": 1250000,
+    "category": "commerce"
+  },
+  {
+    "key": "education_interest",
+    "name": "Education Interest",
+    "aliases": ["Education", "Academy", "Course", "Hoc tap"],
+    "size": 980000,
+    "category": "education"
+  },
+  {
+    "key": "car_buyer_intent",
+    "name": "Car Buyer Intent",
+    "aliases": ["Auto", "Car", "EV", "Car enthusiasts"],
+    "size": 540000,
+    "category": "auto"
+  }
+]

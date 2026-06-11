@@ -35,6 +35,20 @@ class ZoneRecommendationRequest(BaseModel):
     top_n: int = Field(default=5, ge=1, le=10)
 
 
+class DmpMatchRequest(BaseModel):
+    target: BriefTarget
+
+
+class SetupPlanRequest(BaseModel):
+    brief_text: str
+    creative: dict[str, Any] | None = None
+    top_n: int = Field(default=5, ge=1, le=10)
+
+
+class AlertRequest(BaseModel):
+    max_items: int = Field(default=8, ge=1, le=20)
+
+
 class ApiResponse(BaseModel):
     status: Literal["ok"] = "ok"
     data: Any

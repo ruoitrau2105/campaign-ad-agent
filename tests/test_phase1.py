@@ -38,3 +38,58 @@ def test_brief_parse_and_zone_recommendation() -> None:
     zones = rec.json()["data"]["zones"]
     assert len(zones) == 3
     assert zones[0]["score"] >= zones[-1]["score"]
+
+
+def test_dmp_match_detects_gap() -> None:
+    response = client.post(
+        "/api/dmp/match",
+        json={
+            "target": {
+                "interests": ["Health", "Insurance", "Finance", "Du hoc"],
+                "behaviors": [],
+                "location": [],
+            }
+        },
+    )
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["size_est"] > 0
+    gap_terms = {gap["term"] for gap in data["gaps"]}
+    assert "Insurance" in gap_terms
+    assert "Du hoc" in gap_terms
+
+
+def test_setup_plan_end_to_end_contract() -> None:
+    response = client.post(
+        "/api/setup/plan",
+        json={
+            "brief_text": "Brand: ShieldCare. Thu lead bao hiem suc khoe, budget 150 trieu, KPI CPL ROAS. Target Health, Insurance, Finance, Du hoc.",
+            "creative": {"filename": "shieldcare-banner.png", "content_type": "image/png", "size_bytes": 2048},
+            "top_n": 5,
+        },
+    )
+    assert response.status_code == 200
+    data = response.json()["data"]
+    assert data["brief"]["funnel_stage"] == "conversion"
+    assert len(data["zones"]) == 5
+    assert len(data["budget_split"]) == 5
+    assert sum(row["budget_vnd"] for row in data["budget_split"]) == 150_000_000
+    assert len(data["campaigns"]) == 3
+    assert data["creative"]["filename"] == "shieldcare-banner.png"
+
+
+def test_creative_inspect_and_ao_alert() -> None:
+    upload = client.post(
+        "/api/creative/inspect",
+        files={"file": ("creative.txt", b"mock creative bytes", "text/plain")},
+    )
+    assert upload.status_code == 200
+    assert upload.json()["data"]["status"] == "accepted"
+    assert upload.json()["data"]["size_bytes"] == len(b"mock creative bytes")
+
+    alert = client.post("/api/alerts/ao", json={"max_items": 4})
+    assert alert.status_code == 200
+    data = alert.json()["data"]
+    assert "143 bad records" in data["subject"]
+    assert len(data["priority_records"]) == 4
+    assert data["summary"]["total_roas"] == 2.6

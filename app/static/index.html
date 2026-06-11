@@ -1,71 +1,206 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Camp Ads Agent</title>
   <style>
-    :root { color-scheme: light; font-family: Inter, Segoe UI, system-ui, sans-serif; }
-    body { margin: 0; background: #f4f7f5; color: #17221b; }
-    header { padding: 18px 24px; background: #145c2c; color: white; display: flex; justify-content: space-between; gap: 16px; align-items: center; }
-    header h1 { margin: 0; font-size: 20px; letter-spacing: 0; }
-    header span { font-size: 13px; opacity: .86; }
-    main { max-width: 1180px; margin: 0 auto; padding: 22px; display: grid; grid-template-columns: 380px 1fr; gap: 16px; }
-    section { background: white; border: 1px solid #dbe5de; border-radius: 8px; padding: 16px; }
-    h2 { font-size: 15px; margin: 0 0 12px; }
-    textarea, select, input { width: 100%; box-sizing: border-box; border: 1px solid #cbd8cf; border-radius: 6px; padding: 10px; font: inherit; }
-    textarea { min-height: 160px; resize: vertical; }
-    button { border: 0; border-radius: 6px; background: #1f7a3d; color: white; font-weight: 700; padding: 10px 14px; cursor: pointer; }
-    button.secondary { background: #1f3551; }
-    .row { display: flex; gap: 8px; margin-top: 10px; }
-    .row > * { flex: 1; }
-    .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
-    .metric { background: #f4f8f5; border: 1px solid #dbe5de; border-radius: 6px; padding: 10px; }
-    .metric b { display: block; font-size: 18px; color: #145c2c; }
-    .metric span { color: #5b6b60; font-size: 11px; text-transform: uppercase; font-weight: 700; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th, td { border-bottom: 1px solid #e5ece8; text-align: left; padding: 8px; vertical-align: top; }
-    th { color: #5b6b60; font-size: 11px; text-transform: uppercase; }
-    pre { background: #102018; color: #d9f1df; border-radius: 6px; padding: 12px; overflow: auto; max-height: 300px; }
-    @media (max-width: 920px) { main { grid-template-columns: 1fr; } .metric-grid { grid-template-columns: repeat(2, 1fr); } }
+    :root {
+      font-family: Inter, Segoe UI, system-ui, sans-serif;
+      color: #17221b;
+      background: #f4f7f5;
+      --green: #1f7a3d;
+      --green-dark: #145c2c;
+      --line: #dbe5de;
+      --muted: #5b6b60;
+      --navy: #1f3551;
+      --amber: #9a6700;
+      --red: #b00020;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f4f7f5; }
+    header {
+      min-height: 64px;
+      padding: 14px 22px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    h1 { margin: 0; font-size: 20px; letter-spacing: 0; color: var(--green-dark); }
+    .status { font-size: 13px; color: var(--muted); font-weight: 650; }
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 390px 1fr;
+      gap: 14px;
+    }
+    .panel {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 15px;
+      min-width: 0;
+    }
+    .left { align-self: start; }
+    h2 { font-size: 14px; margin: 0 0 10px; color: var(--navy); }
+    label { display: block; font-size: 11px; color: var(--muted); font-weight: 800; text-transform: uppercase; margin: 12px 0 6px; }
+    textarea, input {
+      width: 100%;
+      border: 1px solid #cbd8cf;
+      border-radius: 6px;
+      padding: 10px;
+      font: inherit;
+      background: #ffffff;
+    }
+    textarea { min-height: 176px; resize: vertical; }
+    button {
+      border: 0;
+      border-radius: 6px;
+      background: var(--green);
+      color: #ffffff;
+      font-weight: 750;
+      padding: 10px 12px;
+      cursor: pointer;
+      min-height: 40px;
+    }
+    button.secondary { background: var(--navy); }
+    button.ghost { background: #eef5f0; color: var(--green-dark); }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    .steps { display: grid; grid-template-columns: repeat(6, minmax(92px, 1fr)); gap: 8px; margin-bottom: 12px; }
+    .step {
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 9px;
+      min-height: 58px;
+    }
+    .step b { display: block; font-size: 12px; color: var(--navy); margin-bottom: 3px; }
+    .step span { color: var(--muted); font-size: 11px; }
+    .step.done { border-color: #a8d5b4; background: #f2faf4; }
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-bottom: 12px; }
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: #f7faf8;
+      min-height: 70px;
+    }
+    .metric span { color: var(--muted); font-size: 11px; font-weight: 800; text-transform: uppercase; }
+    .metric b { display: block; margin-top: 4px; font-size: 20px; color: var(--green-dark); }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { padding: 8px; border-bottom: 1px solid #e5ece8; text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: 10.5px; text-transform: uppercase; }
+    .pill { display: inline-block; padding: 2px 7px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+    .good { background: #e8f3ec; color: var(--green-dark); }
+    .watch { background: #fff5df; color: var(--amber); }
+    .bad { background: #fceaec; color: var(--red); }
+    pre {
+      background: #102018;
+      color: #d9f1df;
+      border-radius: 8px;
+      padding: 12px;
+      overflow: auto;
+      max-height: 320px;
+      font-size: 12px;
+    }
+    .alertbox {
+      white-space: pre-wrap;
+      background: #fff9ea;
+      border-left: 4px solid var(--amber);
+      padding: 12px;
+      border-radius: 0 8px 8px 0;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    @media (max-width: 980px) {
+      main { grid-template-columns: 1fr; }
+      .steps, .metrics, .grid2 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 620px) {
+      .steps, .metrics, .grid2, .actions { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>Camp Ads Agent</h1>
-    <span>Mock-first base agent · FastAPI custom workflow</span>
+    <div class="status" id="status">Mock runtime ready</div>
   </header>
   <main>
-    <section>
-      <h2>Brief</h2>
-      <textarea id="brief">Brand: FlyDragon Airlines
-Tăng nhận biết nhóm có ý định du lịch SEA. Budget 425 triệu. KPI Reach, CPM, VTR. Target travel, air travel, hotels.</textarea>
-      <div class="row">
-        <button onclick="parseBrief()">Parse brief</button>
-        <button class="secondary" onclick="recommend()">Recommend zones</button>
-      </div>
-      <h2 style="margin-top:18px">Creative Upload</h2>
+    <section class="panel left">
+      <h2>Campaign Brief</h2>
+      <textarea id="brief">Brand: ShieldCare Insurance
+Thu lead bao hiem suc khoe. Budget 150 trieu. KPI CPL, CR, ROAS. Target Health, Insurance, Finance, Du hoc.</textarea>
+      <label>Creative</label>
       <input type="file" id="creative">
-      <p id="creativeName" style="font-size:13px;color:#5b6b60"></p>
+      <div class="actions">
+        <button onclick="runSetup()">Run setup</button>
+        <button class="secondary" onclick="runReport()">Analyze report</button>
+        <button class="ghost" onclick="parseBrief()">Parse only</button>
+        <button class="ghost" onclick="buildAlert()">Build alert</button>
+      </div>
+      <label>Creative metadata</label>
+      <pre id="creativeMeta">No creative uploaded.</pre>
     </section>
-    <section>
-      <h2>Report Baseline</h2>
-      <div class="metric-grid" id="metrics"></div>
-      <h2>Zone Recommendations</h2>
+
+    <section class="panel">
+      <div class="steps">
+        <div class="step" id="s-brief"><b>Brief</b><span>Parsed JSON</span></div>
+        <div class="step" id="s-creative"><b>Creative</b><span>Asset checked</span></div>
+        <div class="step" id="s-zone"><b>Zones</b><span>Price + perf</span></div>
+        <div class="step" id="s-dmp"><b>DMP</b><span>Match + gaps</span></div>
+        <div class="step" id="s-report"><b>Report</b><span>480 records</span></div>
+        <div class="step" id="s-alert"><b>Alert</b><span>AO action</span></div>
+      </div>
+
+      <div class="metrics" id="metrics"></div>
+
+      <div class="grid2">
+        <div>
+          <h2>Zone Plan</h2>
+          <table>
+            <thead><tr><th>Zone</th><th>Reach</th><th>VI</th><th>CTR</th><th>CPM</th><th>Budget</th></tr></thead>
+            <tbody id="zones"></tbody>
+          </table>
+        </div>
+        <div>
+          <h2>DMP Match</h2>
+          <table>
+            <thead><tr><th>Segment</th><th>Size</th><th>Category</th></tr></thead>
+            <tbody id="dmp"></tbody>
+          </table>
+          <h2 style="margin-top:14px">Gaps</h2>
+          <table>
+            <thead><tr><th>Term</th><th>Proxy</th></tr></thead>
+            <tbody id="gaps"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <h2 style="margin-top:16px">Campaign Drafts</h2>
       <table>
-        <thead><tr><th>Zone</th><th>Objective</th><th>Reach</th><th>VI</th><th>CTR</th><th>CPM</th><th>Score</th></tr></thead>
-        <tbody id="zones"></tbody>
+        <thead><tr><th>ID</th><th>Name</th><th>Format</th><th>Status</th></tr></thead>
+        <tbody id="campaigns"></tbody>
       </table>
-      <h2 style="margin-top:18px">Agent Output</h2>
-      <pre id="output">Loading context...</pre>
+
+      <h2 style="margin-top:16px">AO Alert</h2>
+      <div class="alertbox" id="alert">Run alert after report analysis.</div>
+
+      <h2 style="margin-top:16px">Raw Output</h2>
+      <pre id="output">Loading baseline...</pre>
     </section>
   </main>
+
   <script>
+    const state = { creative: null, setup: null, report: null, alert: null };
     const out = document.getElementById("output");
-    document.getElementById("creative").addEventListener("change", e => {
-      const file = e.target.files[0];
-      document.getElementById("creativeName").textContent = file ? `${file.name} · ${(file.size/1024).toFixed(1)} KB` : "";
-    });
+    const statusEl = document.getElementById("status");
 
     async function api(path, options) {
       const res = await fetch(path, options);
@@ -73,11 +208,26 @@ Tăng nhận biết nhóm có ý định du lịch SEA. Budget 425 triệu. KPI 
       return res.json();
     }
 
+    function setStatus(text) { statusEl.textContent = text; }
+    function done(id) { document.getElementById(id).classList.add("done"); }
+    function fmt(n) { return Number(n || 0).toLocaleString("vi-VN"); }
+
+    document.getElementById("creative").addEventListener("change", async e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const body = new FormData();
+      body.append("file", file);
+      const data = await api("/api/creative/inspect", { method: "POST", body });
+      state.creative = data.data;
+      document.getElementById("creativeMeta").textContent = JSON.stringify(data.data, null, 2);
+      done("s-creative");
+      setStatus("Creative accepted");
+    });
+
     async function load() {
       const summary = await api("/api/reports/summary");
       renderMetrics(summary.data.total);
       out.textContent = JSON.stringify(await api("/api/context"), null, 2);
-      await recommend();
     }
 
     function renderMetrics(total) {
@@ -93,26 +243,68 @@ Tăng nhận biết nhóm có ý định du lịch SEA. Budget 425 triệu. KPI 
       const data = await api("/api/brief/parse", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({text: document.getElementById("brief").value})
+        body: JSON.stringify({ text: document.getElementById("brief").value })
       });
+      done("s-brief");
       out.textContent = JSON.stringify(data, null, 2);
+      return data.data;
     }
 
-    async function recommend() {
-      const parsed = await api("/api/brief/parse", {
+    async function runSetup() {
+      setStatus("Building setup plan...");
+      const data = await api("/api/setup/plan", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({text: document.getElementById("brief").value})
+        body: JSON.stringify({
+          brief_text: document.getElementById("brief").value,
+          creative: state.creative,
+          top_n: 5
+        })
       });
-      const data = await api("/api/zones/recommend", {
+      state.setup = data.data;
+      done("s-brief"); done("s-zone"); done("s-dmp");
+      renderSetup(data.data);
+      out.textContent = JSON.stringify(data, null, 2);
+      setStatus("Setup plan ready");
+    }
+
+    function renderSetup(data) {
+      document.getElementById("zones").innerHTML = data.zones.map((z, i) => {
+        const split = data.budget_split[i] || {};
+        return `<tr><td>${z.zone_id}</td><td>${fmt(z.reach)}</td><td>${z.vi_pct}%</td><td>${z.ctr_pct}%</td><td>${fmt(z.cpm_vnd)}d</td><td>${fmt(split.budget_vnd)}d</td></tr>`;
+      }).join("");
+      document.getElementById("dmp").innerHTML = data.dmp.matched.map(s =>
+        `<tr><td>${s.name}</td><td>${fmt(s.size)}</td><td>${s.category}</td></tr>`
+      ).join("") || `<tr><td colspan="3">No match</td></tr>`;
+      document.getElementById("gaps").innerHTML = data.dmp.gaps.map(g =>
+        `<tr><td><span class="pill bad">${g.term}</span></td><td>${g.suggested_proxy}</td></tr>`
+      ).join("") || `<tr><td colspan="2"><span class="pill good">No major gap</span></td></tr>`;
+      document.getElementById("campaigns").innerHTML = data.campaigns.map(c =>
+        `<tr><td>${c.campaign_id}</td><td>${c.name}</td><td>${c.format}</td><td><span class="pill watch">${c.status}</span></td></tr>`
+      ).join("");
+    }
+
+    async function runReport() {
+      setStatus("Analyzing report...");
+      const data = await api("/api/reports/analyze");
+      state.report = data.data;
+      done("s-report");
+      out.textContent = JSON.stringify(data, null, 2);
+      setStatus("Report analyzed");
+    }
+
+    async function buildAlert() {
+      setStatus("Building AO alert...");
+      const data = await api("/api/alerts/ao", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({objective: parsed.data.funnel_stage, budget_vnd: parsed.data.budget_vnd, top_n: 5})
+        body: JSON.stringify({ max_items: 6 })
       });
-      document.getElementById("zones").innerHTML = data.data.zones.map(z => `
-        <tr><td>${z.zone_id}</td><td>${z.objective}</td><td>${Number(z.reach).toLocaleString("vi-VN")}</td><td>${z.vi_pct}%</td><td>${z.ctr_pct}%</td><td>${Number(z.cpm_vnd).toLocaleString("vi-VN")}đ</td><td>${z.score}</td></tr>
-      `).join("");
-      out.textContent = JSON.stringify({brief: parsed.data, recommendation: data.data}, null, 2);
+      state.alert = data.data;
+      done("s-alert");
+      document.getElementById("alert").textContent = `${data.data.subject}\n\n${data.data.body}`;
+      out.textContent = JSON.stringify(data, null, 2);
+      setStatus("AO alert ready");
     }
 
     load().catch(err => out.textContent = String(err));
