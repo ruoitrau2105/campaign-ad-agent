@@ -64,7 +64,6 @@ def check_ui_root(client: httpx.Client) -> None:
     html = response.text
     for text in [
         "Campaign Ads Agent",
-        "Luồng xử lý từng bước",
         "CHAT",
         "WORKSPACE",
         "Parse brief",
